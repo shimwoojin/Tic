@@ -14,6 +14,10 @@ public:
 	TicGameplayTag();
 	~TicGameplayTag();
 
+	//Character State
 	static FGameplayTag Character_State_IsJumping();
 	static FGameplayTag Character_State_IsAttacking();
+
+	//Event
+	static FGameplayTag Event_Attack_HitCheck();
 };

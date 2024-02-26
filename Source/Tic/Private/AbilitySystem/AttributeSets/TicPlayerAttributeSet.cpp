@@ -7,7 +7,13 @@
 UTicPlayerAttributeSet::UTicPlayerAttributeSet()
 	: TestData(0),
 	MaxHP(100),
-	HP(100)
+	HP(100),
+	MaxAttackRange(100.0f),
+	AttackRange(100.0f),
+	MaxAttackRate(30.0f),
+	AttackRate(30.0f),
+	MaxAttackRadius(50.0f),
+	AttackRadius(50.0f)
 {
 
 }

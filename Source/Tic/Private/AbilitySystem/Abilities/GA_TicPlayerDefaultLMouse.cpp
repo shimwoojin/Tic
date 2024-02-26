@@ -28,7 +28,7 @@ void UGA_TicPlayerDefaultLMouse::ActivateAbility(const FGameplayAbilitySpecHandl
 	}
 
 	//TODO
-	UAnimMontage* MontageToPlay = LoadObject<UAnimMontage>(this, TEXT("/Script/Engine.AnimMontage'/Game/Assets/Characters/Mannequins/Animations/Actions/Mma_Kick_Anim_Montage.Mma_Kick_Anim_Montage'"));
+	static UAnimMontage* MontageToPlay = LoadObject<UAnimMontage>(this, TEXT("/Script/Engine.AnimMontage'/Game/Assets/Characters/Mannequins/Animations/Actions/Mma_Kick_Anim_Montage.Mma_Kick_Anim_Montage'"));
 	if (MontageToPlay)
 	{
 		ACharacter* Character = CastChecked<ACharacter>(AvatarActor);
@@ -36,6 +36,7 @@ void UGA_TicPlayerDefaultLMouse::ActivateAbility(const FGameplayAbilitySpecHandl
 
 		UAbilityTask_PlayMontageAndWait* MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, TEXT("MontagePlay"), MontageToPlay);
 		MontageTask->OnCompleted.AddDynamic(this, &UGA_TicPlayerDefaultLMouse::OnCompleted);
+		MontageTask->OnBlendOut.AddDynamic(this, &UGA_TicPlayerDefaultLMouse::OnBlendOut);
 		MontageTask->OnInterrupted.AddDynamic(this, &UGA_TicPlayerDefaultLMouse::OnInterrupted);
 		MontageTask->OnCancelled.AddDynamic(this, &UGA_TicPlayerDefaultLMouse::OnCancelled);
 		MontageTask->Activate();
@@ -43,43 +44,41 @@ void UGA_TicPlayerDefaultLMouse::ActivateAbility(const FGameplayAbilitySpecHandl
 	else
 	{
 		UE_LOG(AssetNotFound, Warning, TEXT("Not Found MontageToPlay"));
-		OnCompleted();
 	}
 }
 
 void UGA_TicPlayerDefaultLMouse::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
+	ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get());
+	Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-
-	ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get());
-	Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
-}
-
-void UGA_TicPlayerDefaultLMouse::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
-{
-	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
-
-	ACharacter* Character = CastChecked<ACharacter>(ActorInfo->AvatarActor.Get());
-	Character->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 }
 
 void UGA_TicPlayerDefaultLMouse::OnCompleted()
 {
-	bool bReplicateEndAbility = false;
+	bool bReplicateEndAbility = true;
+	bool bWasCancelled = false;
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicateEndAbility, bWasCancelled);
+}
+
+void UGA_TicPlayerDefaultLMouse::OnBlendOut()
+{
+	bool bReplicateEndAbility = true;
 	bool bWasCancelled = false;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 void UGA_TicPlayerDefaultLMouse::OnInterrupted()
 {
-	bool bReplicateEndAbility = false;
+	bool bReplicateEndAbility = true;
 	bool bWasCancelled = true;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 void UGA_TicPlayerDefaultLMouse::OnCancelled()
 {
-	bool bReplicateEndAbility = false;
+	bool bReplicateEndAbility = true;
 	bool bWasCancelled = true;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

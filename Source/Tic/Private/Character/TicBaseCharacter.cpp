@@ -3,12 +3,14 @@
 
 #include "Character/TicBaseCharacter.h"
 #include "AbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Collision/TicCollision.h"
 
 ATicBaseCharacter::ATicBaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-
+	GetCapsuleComponent()->SetCollisionProfileName(FTicCollision::ProfileName_TicCharacter());
 }
 
 UAbilitySystemComponent* ATicBaseCharacter::GetAbilitySystemComponent() const

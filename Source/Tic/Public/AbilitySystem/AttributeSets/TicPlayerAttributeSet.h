@@ -32,6 +32,12 @@ public:
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, TestData);
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, MaxHP);
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, HP);
+	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, MaxAttackRange);
+	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, AttackRange);
+	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, MaxAttackRate);
+	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, AttackRate);
+	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, MaxAttackRadius);
+	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, AttackRadius);
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
@@ -42,4 +48,22 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData HP;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData MaxAttackRange;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData AttackRange;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData MaxAttackRate;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData AttackRate;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData MaxAttackRadius;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData AttackRadius;
 };
