@@ -1,0 +1,8 @@
+/.vsconfig
+/Tic.sln
+/.vs
+/Binaries
+/DerivedDataCache
+/Intermediate
+/Saved
+*BuildData.uasset
