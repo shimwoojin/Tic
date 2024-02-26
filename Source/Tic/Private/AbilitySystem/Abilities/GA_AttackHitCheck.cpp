@@ -7,6 +7,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/Tasks/AT_Trace.h"
 #include "AbilitySystem/TargetActors/TA_Trace.h"
+#include "AbilitySystemComponent.h"
 
 UGA_AttackHitCheck::UGA_AttackHitCheck()
 {
@@ -32,10 +33,22 @@ void UGA_AttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataH
 		FHitResult HitResult = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(TargetDataHandle, 0);
 		UE_LOG(TicCommonLog, Log, TEXT("Target %s Detected"), *(HitResult.GetActor()->GetName()));
 
+		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitResult.GetActor());
+		if (!TargetASC)
+		{
+			UE_LOG(TicCommonLog, Log, TEXT("TargetASC Not Found!!"));
+			return;
+		}
+
 		FGameplayEffectSpecHandle AttackDamageSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffectClass);
 		if (AttackDamageSpecHandle.IsValid())
 		{
 			ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, AttackDamageSpecHandle, TargetDataHandle);
+
+			FGameplayEffectContextHandle EffectContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(AttackDamageSpecHandle);
+			EffectContextHandle.AddHitResult(HitResult);
+			FGameplayCueParameters CueParams(EffectContextHandle);
+			TargetASC->ExecuteGameplayCue(TicGameplayTag::GameplayCue_Character_AttackHit(), CueParams);
 		}
 
 		FGameplayEffectSpecHandle RangeBuffSpecHandle = MakeOutgoingGameplayEffectSpec(AttackRangeBuffEffectClass);

@@ -12,4 +12,4 @@ DEFINE_LOG_CATEGORY(TicAttributeBaseChange);
 DEFINE_LOG_CATEGORY(TicAttributeChange);
 DEFINE_LOG_CATEGORY(TicActivateAbility);
 DEFINE_LOG_CATEGORY(TicEndAbility);
-DEFINE_LOG_CATEGORY(AssetNotFound);
+DEFINE_LOG_CATEGORY(TicAssetNotFound);

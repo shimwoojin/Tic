@@ -25,3 +25,8 @@ FGameplayTag TicGameplayTag::Event_Attack_HitCheck()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("Event.Attack.HitCheck"));
 }
+
+FGameplayTag TicGameplayTag::GameplayCue_Character_AttackHit()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Character.AttackHit"));
+}

@@ -39,11 +39,11 @@ void UGA_TicPlayerDefaultLMouse::ActivateAbility(const FGameplayAbilitySpecHandl
 		MontageTask->OnBlendOut.AddDynamic(this, &UGA_TicPlayerDefaultLMouse::OnBlendOut);
 		MontageTask->OnInterrupted.AddDynamic(this, &UGA_TicPlayerDefaultLMouse::OnInterrupted);
 		MontageTask->OnCancelled.AddDynamic(this, &UGA_TicPlayerDefaultLMouse::OnCancelled);
-		MontageTask->Activate();
+		MontageTask->ReadyForActivation();
 	}
 	else
 	{
-		UE_LOG(AssetNotFound, Warning, TEXT("Not Found MontageToPlay"));
+		UE_LOG(TicAssetNotFound, Warning, TEXT("Not Found MontageToPlay"));
 	}
 }
 

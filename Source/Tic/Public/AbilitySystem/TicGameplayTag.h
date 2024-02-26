@@ -20,4 +20,7 @@ public:
 
 	//Event
 	static FGameplayTag Event_Attack_HitCheck();
+
+	//GameplayCue
+	static FGameplayTag GameplayCue_Character_AttackHit();
 };
