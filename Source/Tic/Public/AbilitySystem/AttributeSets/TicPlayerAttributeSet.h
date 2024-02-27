@@ -24,12 +24,13 @@ class TIC_API UTicPlayerAttributeSet : public UAttributeSet
 public:
 	UTicPlayerAttributeSet();
 
+	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
+
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
 	virtual void PostAttributeBaseChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) const override;
 
-	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, TestData);
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, MaxHP);
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, HP);
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, MaxAttackRange);
@@ -40,30 +41,27 @@ public:
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, AttackRadius);
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
-	FGameplayAttributeData TestData;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Replicated, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData MaxHP;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Replicated, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData HP;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Replicated, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData MaxAttackRange;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Replicated, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData AttackRange;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Replicated, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData MaxAttackRate;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Replicated, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData AttackRate;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Replicated, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData MaxAttackRadius;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Replicated, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData AttackRadius;
 };

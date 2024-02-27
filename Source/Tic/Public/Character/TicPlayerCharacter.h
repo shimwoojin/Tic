@@ -28,8 +28,6 @@ class TIC_API ATicPlayerCharacter : public ATicBaseCharacter
 public:
 	ATicPlayerCharacter();
 
-
-
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> SpringArm;
@@ -80,6 +78,8 @@ protected:
 	void GasInputReleased(int32 InputID);
 
 	virtual void BeginPlay() override;
+
+	virtual void OnRep_PlayerState() override;
 
 public:
 	virtual void PossessedBy(AController* NewController) override;

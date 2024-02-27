@@ -5,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Collision/TicCollision.h"
+#include "Net/UnrealNetwork.h"
 
 ATicBaseCharacter::ATicBaseCharacter()
 {
@@ -16,6 +17,13 @@ ATicBaseCharacter::ATicBaseCharacter()
 UAbilitySystemComponent* ATicBaseCharacter::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void ATicBaseCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	//DOREPLIFETIME(ATicBaseCharacter, AbilitySystemComponent);
 }
 
 void ATicBaseCharacter::BeginPlay()

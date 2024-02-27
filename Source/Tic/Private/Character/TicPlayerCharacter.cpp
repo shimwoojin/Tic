@@ -68,15 +68,17 @@ void ATicPlayerCharacter::BeginPlay()
 
 		PlayerController->ConsoleCommand(TEXT("showdebug abilitysystem"));
 	}
+}
 
-	if (AbilitySystemComponent)
+void ATicPlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	APlayerState* TicPlayerState = GetPlayerState<ATicPlayerState>();
+	IAbilitySystemInterface* AbilitySystemInterface = Cast<IAbilitySystemInterface>(TicPlayerState);
+	if (AbilitySystemInterface)
 	{
-		const UTicPlayerAttributeSet* Set = AbilitySystemComponent->GetSet<UTicPlayerAttributeSet>();
-		if (Set)
-		{
-			UE_LOG(WJTest, Log, TEXT("Attribute Set's TestData : %.0f"), Set->GetTestData());
-			UE_LOG(WJTest, Log, TEXT("Attribute Set's HP : %.0f"), Set->GetHP());
-		}
+		AbilitySystemComponent = AbilitySystemInterface->GetAbilitySystemComponent();
 	}
 }
 

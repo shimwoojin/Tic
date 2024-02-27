@@ -3,10 +3,10 @@
 
 #include "AbilitySystem/AttributeSets/TicPlayerAttributeSet.h"
 #include "Tic.h"
+#include "Net/UnrealNetwork.h"
 
 UTicPlayerAttributeSet::UTicPlayerAttributeSet()
-	: TestData(0),
-	MaxHP(100),
+	: MaxHP(100),
 	HP(100),
 	MaxAttackRange(100.0f),
 	AttackRange(100.0f),
@@ -16,6 +16,20 @@ UTicPlayerAttributeSet::UTicPlayerAttributeSet()
 	AttackRadius(50.0f)
 {
 
+}
+
+void UTicPlayerAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UTicPlayerAttributeSet, MaxHP);
+	DOREPLIFETIME(UTicPlayerAttributeSet, HP);
+	DOREPLIFETIME(UTicPlayerAttributeSet, MaxAttackRange);
+	DOREPLIFETIME(UTicPlayerAttributeSet, AttackRange);
+	DOREPLIFETIME(UTicPlayerAttributeSet, MaxAttackRate);
+	DOREPLIFETIME(UTicPlayerAttributeSet, AttackRate);
+	DOREPLIFETIME(UTicPlayerAttributeSet, MaxAttackRadius);
+	DOREPLIFETIME(UTicPlayerAttributeSet, AttackRadius);
 }
 
 void UTicPlayerAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)

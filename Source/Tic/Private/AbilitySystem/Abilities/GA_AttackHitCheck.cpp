@@ -12,6 +12,9 @@
 UGA_AttackHitCheck::UGA_AttackHitCheck()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+	//ReplicationPolicy = EGameplayAbilityReplicationPolicy::ReplicateYes;
+	NetExecutionPolicy;
+	NetSecurityPolicy;
 	FAbilityTriggerData AbilityTriggerData;
 	AbilityTriggerData.TriggerTag = TicGameplayTag::Event_Attack_HitCheck();
 	AbilityTriggers.Add(AbilityTriggerData);
@@ -58,7 +61,7 @@ void UGA_AttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataH
 		}
 	}
 
-	bool bReplicateEndAbility = false;
-	bool bWasCancelled = true;
+	bool bReplicateEndAbility = true;
+	bool bWasCancelled = false;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

@@ -20,7 +20,9 @@ class TIC_API ATicNonPlayerCharacter : public ATicBaseCharacter
 public:
 	ATicNonPlayerCharacter();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 protected:
-	UPROPERTY(VisibleAnywhere, Category = "GAS")
+	UPROPERTY(VisibleAnywhere, Replicated, Category = "GAS")
 	TObjectPtr<UTicPlayerAttributeSet> AttributeSet;
 };

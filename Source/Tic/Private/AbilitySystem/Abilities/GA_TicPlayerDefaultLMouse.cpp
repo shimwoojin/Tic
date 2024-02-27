@@ -11,6 +11,7 @@
 UGA_TicPlayerDefaultLMouse::UGA_TicPlayerDefaultLMouse()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerOnly;
 	ActivationOwnedTags.AddTag(TicGameplayTag::Character_State_IsAttacking());
 }
 
