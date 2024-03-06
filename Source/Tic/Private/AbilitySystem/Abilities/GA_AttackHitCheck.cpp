@@ -46,12 +46,15 @@ void UGA_AttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataH
 		FGameplayEffectSpecHandle AttackDamageSpecHandle = MakeOutgoingGameplayEffectSpec(AttackDamageEffectClass);
 		if (AttackDamageSpecHandle.IsValid())
 		{
-			ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, AttackDamageSpecHandle, TargetDataHandle);
+			if (HasAuthority(&CurrentActivationInfo))
+			{
+				ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, AttackDamageSpecHandle, TargetDataHandle);
 
-			FGameplayEffectContextHandle EffectContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(AttackDamageSpecHandle);
-			EffectContextHandle.AddHitResult(HitResult);
-			FGameplayCueParameters CueParams(EffectContextHandle);
-			TargetASC->ExecuteGameplayCue(TicGameplayTag::GameplayCue_Character_AttackHit(), CueParams);
+				FGameplayEffectContextHandle EffectContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(AttackDamageSpecHandle);
+				EffectContextHandle.AddHitResult(HitResult);
+				FGameplayCueParameters CueParams(EffectContextHandle);
+				TargetASC->ExecuteGameplayCue(TicGameplayTag::GameplayCue_Character_AttackHit(), CueParams);
+			}
 		}
 
 		FGameplayEffectSpecHandle RangeBuffSpecHandle = MakeOutgoingGameplayEffectSpec(AttackRangeBuffEffectClass);

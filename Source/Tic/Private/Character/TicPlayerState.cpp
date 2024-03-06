@@ -13,6 +13,7 @@ ATicPlayerState::ATicPlayerState()
 	if (AbilitySystemComponent)
 	{
 		AbilitySystemComponent->SetIsReplicated(true);
+		AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	}
 	AttributeSet = CreateDefaultSubobject<UTicPlayerAttributeSet>(TEXT("AttributeSet"));
 }
