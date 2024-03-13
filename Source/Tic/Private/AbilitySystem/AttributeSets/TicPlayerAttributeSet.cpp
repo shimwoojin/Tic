@@ -96,7 +96,4 @@ void UTicPlayerAttributeSet::OnRep_MaxAttackRadius(const FGameplayAttributeData&
 void UTicPlayerAttributeSet::OnRep_AttackRadius(const FGameplayAttributeData& OldAttackRadius)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UTicPlayerAttributeSet, AttackRadius, OldAttackRadius);
-	//static FProperty* ThisProperty = FindFieldChecked<FProperty>(UTicPlayerAttributeSet::StaticClass(), GET_MEMBER_NAME_CHECKED(UTicPlayerAttributeSet, AttackRadius));
-	//GetOwningAbilitySystemComponentChecked()->SetBaseAttributeValueFromReplication(FGameplayAttribute(ThisProperty), AttackRadius, OldAttackRadius);
-	//GetOwningAbilitySystemComponentChecked()->SetBaseAttributeValueFromReplication(FGameplayAttribute(ThisProperty), AttackRadius, OldAttackRadius);
 }
