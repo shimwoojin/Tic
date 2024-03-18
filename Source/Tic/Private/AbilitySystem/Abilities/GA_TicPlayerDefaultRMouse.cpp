@@ -4,6 +4,8 @@
 #include "AbilitySystem/Abilities/GA_TicPlayerDefaultRMouse.h"
 #include "Tic.h"
 #include "Abilities/GameplayAbilityTypes.h"
+#include "Abilities/Tasks/AbilityTask_MoveToLocation.h"
+#include "Abilities/Tasks/AbilityTask_WaitInputPress.h"
 
 UGA_TicPlayerDefaultRMouse::UGA_TicPlayerDefaultRMouse()
 {
@@ -23,7 +25,32 @@ void UGA_TicPlayerDefaultRMouse::ActivateAbility(const FGameplayAbilitySpecHandl
 		UE_LOG(TicActivateAbility, Log, TEXT("AbilitySpecHandle : %s, OwnerActor : %s, AvatarActor : %s"), *Handle.ToString(), *OwnerActor->GetName(), *AvatarActor->GetName());
 	}
 
+	FVector TargetLocation = AvatarActor->GetActorLocation() + FVector(500.0f, 0.0f, 0.0f);
+	UAbilityTask_MoveToLocation* MoveTask = UAbilityTask_MoveToLocation::MoveToLocation(this, TEXT("MoveToLocation"), TargetLocation, 3.0f, nullptr, nullptr);
+	
+	UAbilityTask_WaitInputPress* WaitInputPressTask = UAbilityTask_WaitInputPress::WaitInputPress(this);
+	WaitInputPressTask->OnPress.AddDynamic(this, &ThisClass::InputPress);
+	WaitInputPressTask->ReadyForActivation();
+
+	if (::IsValid(MoveTask))
+	{
+		MoveTask->OnTargetLocationReached.AddDynamic(this, &ThisClass::AbilityEnded);
+		MoveTask->ReadyForActivation();
+	}
+	else
+	{
+		AbilityEnded();
+	}
+}
+
+void UGA_TicPlayerDefaultRMouse::AbilityEnded()
+{
 	bool bReplicatedEndAbility = true;
 	bool bWasCancelled = false;
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, bReplicatedEndAbility, bWasCancelled);
+}
+
+void UGA_TicPlayerDefaultRMouse::InputPress(float TimeWaited)
+{
+	UE_LOG(TicActivateAbility, Log, TEXT("Input Pressed : %f"), TimeWaited);
 }
