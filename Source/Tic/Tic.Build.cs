@@ -14,7 +14,11 @@ public class Tic : ModuleRules
 			"CoreUObject", 
 			"Engine", 
 			"InputCore",
-            "EnhancedInput"
+            "EnhancedInput",
+			"AIModule",
+			"UMG",
+			"Niagara",
+			"NavigationSystem"
         } );
 
 		PrivateDependencyModuleNames.AddRange(new string[] 

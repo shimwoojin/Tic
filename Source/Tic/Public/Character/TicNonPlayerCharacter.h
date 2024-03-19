@@ -23,6 +23,6 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
-	UPROPERTY(VisibleAnywhere, Replicated, Category = "GAS")
+	UPROPERTY(VisibleAnywhere, Category = "GAS")
 	TObjectPtr<UTicPlayerAttributeSet> AttributeSet;
 };
