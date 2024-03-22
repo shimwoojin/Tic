@@ -5,19 +5,14 @@
 #include "Tic.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 ATicAIController::ATicAIController()
 {
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BT_ASSET(TEXT("/Script/AIModule.BlackboardData'/Game/Blueprint/AI/BB_AITest.BB_AITest'"));
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> BT_ASSET(TEXT("/Script/AIModule.BehaviorTree'/Game/Blueprint/AI/BT_AITest.BT_AITest'"));
 	if (BT_ASSET.Succeeded())
 	{
 		BTAsset = BT_ASSET.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UBlackboardData> BB_ASSET(TEXT("/Script/AIModule.BlackboardData'/Game/Blueprint/AI/BB_AITest.BB_AITest'"));
-	if (BB_ASSET.Succeeded())
-	{
-		BBAsset = BB_ASSET.Object;
 	}
 }
 
@@ -30,10 +25,14 @@ void ATicAIController::OnPossess(APawn* InPawn)
 
 void ATicAIController::RunAI()
 {
-	UBlackboardComponent* BlackboardComponent;
-	if (UseBlackboard(BBAsset, BlackboardComponent))
+	UE_LOG(TicAI, Log, TEXT("%s : RunBehaviorTree"), ANSI_TO_TCHAR(__FUNCTION__));
+	bool bResult = RunBehaviorTree(BTAsset);
+	ensure(bResult);
+
+	if (Blackboard)
 	{
-		RunBehaviorTree(BTAsset);
+		Blackboard->SetValueAsVector("Location1", FVector(500.0f, 0.0f, 0.0f));
+		Blackboard->SetValueAsVector("Location2", FVector(-500.0f, 0.0f, 0.0f));
 	}
 }
 

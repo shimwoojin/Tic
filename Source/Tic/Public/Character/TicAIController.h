@@ -26,6 +26,4 @@ private:
 	UPROPERTY()
 	class UBehaviorTree* BTAsset;
 
-	UPROPERTY()
-	class UBlackboardData* BBAsset;
 };
