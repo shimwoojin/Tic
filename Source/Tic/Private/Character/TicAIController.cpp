@@ -6,6 +6,8 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
 
 ATicAIController::ATicAIController()
 {
@@ -14,13 +16,16 @@ ATicAIController::ATicAIController()
 	{
 		BTAsset = BT_ASSET.Object;
 	}
+
+	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComponent"));
 }
 
 void ATicAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	RunAI();
+	RunAI(); 
+	InitPerception();
 }
 
 void ATicAIController::RunAI()
@@ -38,4 +43,33 @@ void ATicAIController::RunAI()
 
 void ATicAIController::StopAI()
 {
+}
+
+void ATicAIController::InitPerception()
+{
+	check(PerceptionComponent);
+
+	UAISenseConfig_Sight* SightConfig = NewObject<UAISenseConfig_Sight>(this, TEXT("Sight"));
+	if (SightConfig)
+	{
+		SightConfig->SightRadius = 2000.0f;
+		SightConfig->LoseSightRadius = 2500.0f;
+		SightConfig->PeripheralVisionAngleDegrees = 80.0f;
+
+		SightConfig->DetectionByAffiliation.bDetectEnemies = true;
+		SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
+		SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
+
+		PerceptionComponent->ConfigureSense(*SightConfig);
+	}
+
+	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ThisClass::TargetPerceptionUpdatedCallback);
+}
+
+void ATicAIController::TargetPerceptionUpdatedCallback(AActor* Actor, FAIStimulus Stimulus)
+{
+	if (::IsValid(Actor) && Stimulus.WasSuccessfullySensed())
+	{
+		UE_LOG(TicAI, Log, TEXT("%s Detected Successful : %s"), *Actor->GetName(), *Stimulus.StimulusLocation.ToString());
+	}
 }

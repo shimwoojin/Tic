@@ -22,8 +22,12 @@ public:
 	void RunAI();
 	void StopAI();
 
+	void InitPerception();
+	UFUNCTION()
+	void TargetPerceptionUpdatedCallback(AActor* Actor, struct FAIStimulus Stimulus);
+
 private:
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly)
 	class UBehaviorTree* BTAsset;
 
 };
