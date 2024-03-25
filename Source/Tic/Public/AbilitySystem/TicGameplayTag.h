@@ -23,4 +23,7 @@ public:
 
 	//GameplayCue
 	static FGameplayTag GameplayCue_Character_AttackHit();
+
+	//Data
+	static FGameplayTag Data_Damage();
 };

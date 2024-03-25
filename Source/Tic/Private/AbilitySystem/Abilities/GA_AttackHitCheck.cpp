@@ -7,6 +7,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/Tasks/AT_Trace.h"
 #include "AbilitySystem/TargetActors/TA_Trace.h"
+#include "AbilitySystem/AttributeSets/TicPlayerAttributeSet.h"
 #include "AbilitySystemComponent.h"
 
 UGA_AttackHitCheck::UGA_AttackHitCheck()
@@ -36,10 +37,19 @@ void UGA_AttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataH
 		FHitResult HitResult = UAbilitySystemBlueprintLibrary::GetHitResultFromTargetData(TargetDataHandle, 0);
 		UE_LOG(TicCommonLog, Log, TEXT("Target %s Detected"), *(HitResult.GetActor()->GetName()));
 
+		UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(CurrentActorInfo->AvatarActor.Get());
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitResult.GetActor());
-		if (!TargetASC)
+		if (!TargetASC || !SourceASC)
 		{
-			UE_LOG(TicCommonLog, Log, TEXT("TargetASC Not Found!!"));
+			UE_LOG(TicCommonLog, Log, TEXT("ASC Null!!"));
+			return;
+		}
+
+		const UTicPlayerAttributeSet* SourceAttribute = SourceASC->GetSet<UTicPlayerAttributeSet>();
+
+		if (!SourceAttribute)
+		{
+			UE_LOG(TicCommonLog, Log, TEXT("Attribute Null!!"));
 			return;
 		}
 
@@ -48,6 +58,7 @@ void UGA_AttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataH
 		{
 			if (HasAuthority(&CurrentActivationInfo))
 			{
+				AttackDamageSpecHandle.Data->SetSetByCallerMagnitude(TicGameplayTag::Data_Damage(), SourceAttribute->GetAttackRate());
 				ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, AttackDamageSpecHandle, TargetDataHandle);
 
 				FGameplayEffectContextHandle EffectContextHandle = UAbilitySystemBlueprintLibrary::GetEffectContext(AttackDamageSpecHandle);
@@ -57,7 +68,7 @@ void UGA_AttackHitCheck::OnTraceResultCallback(const FGameplayAbilityTargetDataH
 			}
 		}
 
-		FGameplayEffectSpecHandle RangeBuffSpecHandle = MakeOutgoingGameplayEffectSpec(AttackRangeBuffEffectClass);
+		FGameplayEffectSpecHandle RangeBuffSpecHandle = MakeOutgoingGameplayEffectSpec(AttackBuffEffectClass);
 		if (RangeBuffSpecHandle.IsValid())
 		{
 			ApplyGameplayEffectSpecToOwner(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, RangeBuffSpecHandle);

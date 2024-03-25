@@ -27,5 +27,5 @@ protected:
 	TSubclassOf<class UGameplayEffect> AttackDamageEffectClass;
 
 	UPROPERTY(EditAnywhere, Category = "GAS")
-	TSubclassOf<class UGameplayEffect> AttackRangeBuffEffectClass;
+	TSubclassOf<class UGameplayEffect> AttackBuffEffectClass;
 };

@@ -30,6 +30,8 @@ public:
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
 	virtual void PostAttributeBaseChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) const override;
+	//virtual bool PreGameplayEffectExecute(struct FGameplayEffectModCallbackData& Data) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, MaxHP);
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, HP);
@@ -39,6 +41,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, AttackRate);
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, MaxAttackRadius);
 	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, AttackRadius);
+	ATTRIBUTE_ACCESSORS(UTicPlayerAttributeSet, Damage);
 
 	UFUNCTION()
 	virtual void OnRep_MaxHP(const FGameplayAttributeData& OldMaxHP);
@@ -88,4 +91,7 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Property", ReplicatedUsing = OnRep_AttackRadius, Meta = (AllowPrivateAccess = "True"))
 	FGameplayAttributeData AttackRadius;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Property", Meta = (AllowPrivateAccess = "True"))
+	FGameplayAttributeData Damage;
 };

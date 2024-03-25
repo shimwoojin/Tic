@@ -30,3 +30,8 @@ FGameplayTag TicGameplayTag::GameplayCue_Character_AttackHit()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("GameplayCue.Character.AttackHit"));
 }
+
+FGameplayTag TicGameplayTag::Data_Damage()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Data.Damage"));
+}

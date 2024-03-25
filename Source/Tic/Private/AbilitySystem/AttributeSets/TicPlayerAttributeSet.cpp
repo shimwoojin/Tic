@@ -4,6 +4,7 @@
 #include "AbilitySystem/AttributeSets/TicPlayerAttributeSet.h"
 #include "Tic.h"
 #include "Net/UnrealNetwork.h"
+#include "GameplayEffectExtension.h"
 
 UTicPlayerAttributeSet::UTicPlayerAttributeSet()
 	: MaxHP(100),
@@ -56,6 +57,20 @@ void UTicPlayerAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& At
 void UTicPlayerAttributeSet::PostAttributeBaseChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) const
 {
 	UE_LOG(TicAttributeBaseChange, Log, TEXT("%s OldValue : %f, NewValue : %f"), *Attribute.AttributeName, OldValue, NewValue);
+}
+
+void UTicPlayerAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	if (Data.EvaluatedData.Attribute == GetHPAttribute())
+	{
+		UE_LOG(TicAttributeBaseChange, Warning, TEXT("%s : Direct Hp Access!"), ANSI_TO_TCHAR(__FUNCTION__));
+	}
+	else if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	{
+		float HPAfterDamage = FMath::Clamp(GetHP() - GetDamage(), 0, GetMaxHP());
+		SetHP(HPAfterDamage);
+		SetDamage(0.0f);
+	}
 }
 
 void UTicPlayerAttributeSet::OnRep_MaxHP(const FGameplayAttributeData& OldMaxHP)
