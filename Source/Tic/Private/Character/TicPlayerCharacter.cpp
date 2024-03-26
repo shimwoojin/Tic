@@ -15,7 +15,7 @@
 ATicPlayerCharacter::ATicPlayerCharacter()
 {
 	// Set size for collision capsule
-	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	GetCapsuleComponent()->InitCapsuleSize(42.f, 90.0f);
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -34,6 +34,7 @@ ATicPlayerCharacter::ATicPlayerCharacter()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->BrakingDecelerationFalling = 1500.0f;
+	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 
 	//Camera
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -122,6 +123,10 @@ void ATicPlayerCharacter::SetupGASInputComponent()
 		//RMouse
 		EnhancedInputComponent->BindAction(RMouseAction, ETriggerEvent::Started, this, &ThisClass::GasInputPressed, 2);
 		EnhancedInputComponent->BindAction(RMouseAction, ETriggerEvent::Completed, this, &ThisClass::GasInputReleased, 2);
+
+		//Crouch
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ThisClass::GasInputPressed, 3);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &ThisClass::GasInputReleased, 3);
 	}
 }
 

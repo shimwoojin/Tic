@@ -17,6 +17,7 @@ public:
 	//Character State
 	static FGameplayTag Character_State_IsJumping();
 	static FGameplayTag Character_State_IsAttacking();
+	static FGameplayTag Character_State_IsCrouching();
 
 	//Event
 	static FGameplayTag Event_Attack_HitCheck();

@@ -21,6 +21,11 @@ FGameplayTag TicGameplayTag::Character_State_IsAttacking()
 	return FGameplayTag::RequestGameplayTag(TEXT("Character.State.IsAttacking"));
 }
 
+FGameplayTag TicGameplayTag::Character_State_IsCrouching()
+{
+	return FGameplayTag::RequestGameplayTag(TEXT("Character.State.IsCrouching"));
+}
+
 FGameplayTag TicGameplayTag::Event_Attack_HitCheck()
 {
 	return FGameplayTag::RequestGameplayTag(TEXT("Event.Attack.HitCheck"));
